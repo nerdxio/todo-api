@@ -21,7 +21,7 @@ public class TodoController {
          return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Todo> getById(@PathVariable String id) {
         Todo result =  todoService.getById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
