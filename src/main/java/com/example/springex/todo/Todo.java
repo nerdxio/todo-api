@@ -17,7 +17,7 @@ public class Todo {
     private String description;
     private Long timestamp;
 
-    public Todo(int String, String title, String description) {
+    public Todo(String id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
