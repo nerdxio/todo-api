@@ -16,25 +16,28 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository repository;
+    private final UserRepository repository;
 
-    @Bean
-    private PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+    private final SecurityConfig securityConfig;
+
+    @Autowired
+    public UserService(UserRepository repository, SecurityConfig securityConfig) {
+        this.repository = repository;
+        this.securityConfig = securityConfig;
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new User("hassan", passwordEncoder().encode("password"), AuthorityUtils.NO_AUTHORITIES);
+        return new User("hassan", securityConfig.passwordEncoder().encode("password"), AuthorityUtils.NO_AUTHORITIES);
     }
 
-    public void save(AppUser user){
-        user.setPassword(passwordEncoder().encode(user.getPassword()));
+    public void save(AppUser user) {
+        user.setPassword(securityConfig.passwordEncoder().encode(user.getPassword()));
         this.repository.save(user);
     }
 
-    public List<AppUser>findAll() {
+    public List<AppUser> findAll() {
         return repository.findAll();
     }
 }

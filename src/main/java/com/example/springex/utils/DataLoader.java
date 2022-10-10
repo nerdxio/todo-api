@@ -10,10 +10,14 @@ import org.springframework.stereotype.Component;
 
 // it is running Auto when the container stated
 @Component
-public class FirstTimeInitializer  implements CommandLineRunner {
-private final Log logger = LogFactory.getLog(FirstTimeInitializer.class);
+public class DataLoader implements CommandLineRunner {
+private final Log logger = LogFactory.getLog(DataLoader.class);
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public DataLoader(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public void run(String... args) throws Exception {

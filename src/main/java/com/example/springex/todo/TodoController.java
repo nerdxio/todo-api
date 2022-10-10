@@ -12,8 +12,12 @@ import java.util.List;
 @RequestMapping("api/v1/todos")
 public class TodoController {
 
+    private final TodoService todoService;
+
     @Autowired
-    private TodoService todoService;
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
+    }
 
     @GetMapping(value = {"", "/"})
     public ResponseEntity<List<Todo>> listTodo() {
