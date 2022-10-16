@@ -34,5 +34,6 @@ public class AuthController {
         UserDetails userDetails = userService.loadUserByUsername(sinInRequest.getUsername());
         String token = tokenUtil.GenerateToken(userDetails);
         return new JwtResponse(token);
+        // it
     }
 }
