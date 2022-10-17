@@ -1,9 +1,8 @@
 package com.example.springex.security;
 
+import com.example.springex.error.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,25 +14,28 @@ import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
-
-    private final UserRepository repository;
-
-    private final SecurityConfig securityConfig;
-
     @Autowired
-    public UserService(UserRepository repository, SecurityConfig securityConfig) {
-        this.repository = repository;
-        this.securityConfig = securityConfig;
+    private  UserRepository repository;
+
+    @Bean
+    private PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new User("hassan", securityConfig.passwordEncoder().encode("password"), AuthorityUtils.NO_AUTHORITIES);
+   //     return new User("hassan", securityConfig.passwordEncoder().encode("password"), AuthorityUtils.NO_AUTHORITIES);
+        AppUser user = repository.findAppUserByEmail(username);
+
+        if(user == null) {
+            throw new NotFoundException("User Not Found");
+        }
+        return  user;
     }
 
     public void save(AppUser user) {
-        user.setPassword(securityConfig.passwordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
         this.repository.save(user);
     }
 
