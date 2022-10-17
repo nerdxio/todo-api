@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping
-@RestController(value = "/api/auth")
+@RestController
+@RequestMapping(value = "/api/v1/auth")
+
 public class AuthController {
 
     @Autowired
@@ -31,9 +32,9 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(sinInRequest.getUsername(), sinInRequest.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         UserDetails userDetails = userService.loadUserByUsername(sinInRequest.getUsername());
         String token = tokenUtil.GenerateToken(userDetails);
         return new JwtResponse(token);
-        // it
     }
 }

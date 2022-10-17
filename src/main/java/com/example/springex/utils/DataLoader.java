@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 // it is running Auto when the container stated
 @Component
 public class DataLoader implements CommandLineRunner {
-private final Log logger = LogFactory.getLog(DataLoader.class);
+    private final Log logger = LogFactory.getLog(DataLoader.class);
     private final UserService userService;
 
     @Autowired
@@ -21,10 +21,11 @@ private final Log logger = LogFactory.getLog(DataLoader.class);
 
     @Override
     public void run(String... args) throws Exception {
-        if (userService.findAll().isEmpty()){
+        if (userService.findAll().isEmpty()) {
             logger.info("No users accounts found");
+
+            AppUser user = new AppUser("hassan@gmail.com", "password", "hassan");
+            userService.save(user);
         }
-        AppUser user = new AppUser("hassan.refaat.dev@gmail.com","password","hassan");
-        userService.save(user);
     }
 }
